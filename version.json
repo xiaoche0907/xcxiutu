@@ -1,6 +1,6 @@
-{
-  "version": "4.2.1",
-  "notes": "测试发布：更新系统上线",
-  "publishedAt": "2026-11-14T09:16:36.190Z",
-  "asarUrl": "https://raw.githubusercontent.com/xiaoche0907/xcxiutu/main/app-4.2.1.asar"
+﻿{
+    "publishedAt":  "2026-11-14T19:56:10.995Z",
+    "asarUrl":  "https://raw.githubusercontent.com/xiaoche0907/xcxiutu/main/app-4.5.2.asar",
+    "version":  "4.5.2",
+    "notes":  "同步官方 4.5.2：升级中性灰平整、新增中性灰立体/质感磨皮/祛碎发/祛影棚背景瑕疵、支持滑块参数输入、修复批量导入内存溢出"
 }
