@@ -7,7 +7,7 @@ const fs = require('fs');
 const https = require('https');
 const http = require('http');
 
-const REPO_RAW = 'https://raw.githubusercontent.com/xiaoche0907/xcxiutu/main';
+const REPO_API = 'https://api.github.com/repos/xiaoche0907/xcxiutu';
 const CURRENT_VERSION = '4.2.0';
 
 function resourcesDir() {
@@ -25,12 +25,14 @@ function resourcesDir() {
   return path.join(__dirname, '..');
 }
 
-function fetchUrl(url) {
+function fetchUrl(url, extraHeaders, timeoutMs) {
   return new Promise((resolve, reject) => {
     const mod = url.startsWith('https') ? https : http;
-    const req = mod.get(url, (res) => {
+    const req = mod.get(url, {
+      headers: Object.assign({ 'User-Agent': 'xcxiutu-updater' }, extraHeaders || {}),
+    }, (res) => {
       if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        return fetchUrl(res.headers.location).then(resolve, reject);
+        return fetchUrl(res.headers.location, extraHeaders, timeoutMs).then(resolve, reject);
       }
       if (res.statusCode !== 200) return reject(new Error('HTTP ' + res.statusCode));
       const chunks = [];
@@ -38,23 +40,29 @@ function fetchUrl(url) {
       res.on('end', () => resolve(Buffer.concat(chunks)));
     });
     req.on('error', reject);
-    req.setTimeout(30000, () => { req.destroy(new Error('timeout')); });
+    req.setTimeout(timeoutMs || 30000, () => { req.destroy(new Error('timeout')); });
   });
 }
 
 // 用户端：检查最新版本
 ipcMain.handle('update-check', async () => {
   try {
-    const buf = await fetchUrl(REPO_RAW + '/version.json');
-    const info = JSON.parse(buf.toString('utf-8'));
+    // 需要 UA 头，否则 GitHub API 拒绝
+    const buf = await fetchUrl(REPO_API + '/releases/latest', {
+      'User-Agent': 'xcxiutu-updater',
+      'Accept': 'application/vnd.github+json',
+    });
+    const rel = JSON.parse(buf.toString('utf-8'));
+    const latest = (rel.tag_name || '').replace(/^v/, '');
+    const asset = (rel.assets || []).find(a => /\.asar$/.test(a.name));
     return {
       ok: true,
       current: CURRENT_VERSION,
-      latest: info.version,
-      notes: info.notes || '',
-      publishedAt: info.publishedAt || '',
-      hasUpdate: info.version !== CURRENT_VERSION,
-      asarUrl: info.asarUrl || (REPO_RAW + '/app-' + info.version + '.asar'),
+      latest: latest,
+      notes: rel.body || '',
+      publishedAt: rel.published_at || '',
+      hasUpdate: latest !== CURRENT_VERSION,
+      asarUrl: asset ? asset.browser_download_url : null,
     };
   } catch (e) {
     return { ok: false, error: '无法连接更新服务器: ' + e.message };
@@ -64,8 +72,10 @@ ipcMain.handle('update-check', async () => {
 // 用户端：下载新 asar 到临时位置
 ipcMain.handle('update-download', async (e, url) => {
   try {
-    const buf = await fetchUrl(url);
-    const tmp = path.join(resourcesDir(), 'app-update.asar.tmp');
+    const buf = await fetchUrl(url, null, 600000); // 大文件：10 分钟超时
+    const wasNoAsar = process.noAsar;
+    process.noAsar = true;
+    try { fs.writeFileSync(tmp, buf); } finally { process.noAsar = wasNoAsar; }
     fs.writeFileSync(tmp, buf);
     return { ok: true, size: buf.length, tmp };
   } catch (e) {
