@@ -1,0 +1,352 @@
+<!doctype html> <html lang=zh-CN> <head> <meta charset=UTF-8> <meta content="width=device-width,initial-scale=1" name=viewport> <title>小彻工坊</title> <link href=css/home.css rel=stylesheet> <script>
+// 本地令牌守卫：未通过令牌验证则跳回登录页
+(function(){
+  if(localStorage.getItem('isLoggedIn')!=='true'){
+    location.replace('login.html');
+  }
+})();
+</script><script src=js/vendor/utils.js></script> <script src=js/vendor/font.js></script> <style id=xc-admin-style>
+.xc-admin-wrap{max-width:720px;margin:24px auto;padding:0 24px}
+.xc-admin-card{background:#1e1e1e;border:1px solid #333;border-radius:14px;padding:26px 28px;box-shadow:0 8px 32px rgba(0,0,0,.35)}
+.xc-admin-head{display:flex;align-items:center;gap:14px;padding-bottom:18px;border-bottom:1px solid #2c2c2c;margin-bottom:20px}
+.xc-admin-icon{width:44px;height:44px;border-radius:11px;background:linear-gradient(135deg,#0187ff,#6e4bff);display:flex;align-items:center;justify-content:center;font-size:22px}
+.xc-admin-title{color:#fff;font-size:17px;font-weight:600}
+.xc-admin-sub{color:#8a8a93;font-size:12px;margin-top:3px}
+.xc-admin-badge{margin-left:auto;background:rgba(110,75,255,.15);color:#a78bfa;border:1px solid rgba(110,75,255,.35);font-size:11px;padding:3px 10px;border-radius:20px}
+.xc-admin-row{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap}
+.xc-field{display:flex;flex-direction:column;gap:6px;flex:1;min-width:180px}
+.xc-field-sm{flex:0 0 90px;min-width:90px}
+.xc-label{color:#9a9aa3;font-size:12px}
+.xc-input{padding:9px 12px;border-radius:8px;border:1px solid #3a3a3a;background:#161616;color:#eee;font-size:13px;outline:none;transition:border .2s}
+.xc-input:focus{border-color:#0187ff}
+.xc-btn-primary{padding:9px 20px;background:linear-gradient(135deg,#0187ff,#5b7cfa);color:#fff;border:none;border-radius:8px;font-size:13px;cursor:pointer;transition:opacity .2s}
+.xc-btn-primary:hover{opacity:.88}
+.xc-btn-ghost{padding:9px 16px;background:transparent;color:#aaa;border:1px solid #3a3a3a;border-radius:8px;font-size:13px;cursor:pointer;transition:all .2s}
+.xc-btn-ghost:hover{color:#fff;border-color:#555}
+.xc-gen-out{margin-top:14px;color:#7fd48a;font-size:13px;white-space:pre-wrap;font-family:Consolas,monospace;background:#151515;border:1px dashed #2e4a33;border-radius:8px;padding:10px 12px;display:none}
+.xc-gen-out.show{display:block}
+.xc-token-head{display:flex;align-items:center;justify-content:space-between;margin:20px 0 8px}
+.xc-count{background:#2a2a2a;color:#bbb;font-size:11px;padding:2px 9px;border-radius:12px}
+.xc-token-list{max-height:220px;overflow:auto;font-size:12.5px;color:#b8b8c0;background:#161616;border:1px solid #2a2a2a;border-radius:8px;padding:12px 14px;white-space:pre-wrap;font-family:Consolas,monospace;line-height:1.9}
+</style> </head> <body> <div class=main-container> <div class=header><img alt=Logo src=images/Llogo_jb.png class=logo draggable=false> <h2 class=logo_title>小彻工坊</h2><a class=logo_title_2 style=color:grey>&nbsp;v4.2.0 </a><button class="header-buttons tooltip">💎&nbsp;用前必看</button><div class=person> <img alt=用户 src=css/icon-user.svg class=user-avatar height=25 width=25> <div class=person-content><a href=login.html id=logoutLink>退出登录</a><a href=# id=exitApp>关闭应用</a></div> </div> </div> <div class=container> <div class=sidebar><button class=active id=homeBtn>我的主页</button><button id=localBtn>本地项目</button><button id=recycleBtn>系统设置</button><button id=adminBtn>管理员系统</button> </div> <div class=main> <div class="tab-content active" id=homeContent> <div class=hero-section id=project_image_import_button> <div class=hero-entry> <span class=hero-plus> <svg height=26 viewBox="0 0 24 24" width=26 fill=none stroke=currentColor stroke-width=1.5 stroke-linecap=round> <line x1=12 x2=12 y1=5 y2=19 /> <line x1=5 x2=19 y1=12 y2=12 /> </svg> </span> <span class=hero-entry-text>开始修图</span> </div> </div> <div class=quick-access> <div class=quick-item onclick='window.location.href="中型测试.html?mode=camera"'> <div class=quick-icon> <svg height=24 viewBox="0 0 24 24" width=24 fill=none stroke=currentColor stroke-width=2> <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/> <circle cx=12 cy=13 r=4 /> </svg> </div> <span>联机拍摄</span> </div> <div class=quick-item onclick='window.location.href="中型测试.html?mode=iceai"'> <div class=quick-icon> <svg height=28 viewBox="0 0 1024 1024" width=28 class=icon p-id=1704 t=1789390999366 version=1.1 xmlns=http://www.w3.org/2000/svg> <path d="M140.241455 609.000727V409.134545c0-42.589091 0-76.241455 2.187636-103.330909 2.234182-27.461818 6.935273-50.594909 17.687273-71.773091a182.551273 182.551273 0 0 1 79.825454-79.778909c21.178182-10.798545 44.357818-15.499636 71.773091-17.687272 27.042909-2.234182 60.741818-2.234182 103.330909-2.234182h99.886546a28.811636 28.811636 0 1 1 0 57.623273H414.999273c-43.52 0-74.472727 0.046545-98.629818 2.001454-23.831273 1.954909-38.632727 5.678545-50.269091 11.636364A124.881455 124.881455 0 0 0 211.456 260.189091c-5.957818 11.729455-9.681455 26.530909-11.636364 50.315636-1.954909 24.203636-2.001455 55.156364-2.001454 98.676364v199.819636c0 43.473455 0 74.426182 2.001454 98.629818 1.954909 23.831273 5.678545 38.632727 11.636364 50.269091 11.962182 23.505455 31.092364 42.589091 54.551273 54.597819 11.682909 5.957818 26.484364 9.681455 50.315636 11.636363 24.203636 1.954909 55.109818 2.001455 98.676364 2.001455h227.979636c61.905455 0 85.783273-0.418909 104.168727-6.656a124.928 124.928 0 0 0 78.149819-78.149818c6.237091-18.385455 6.609455-42.216727 6.609454-104.168728 0-19.130182 0-32.116364-0.605091-41.844363-0.651636-9.914182-1.768727-13.032727-2.141091-13.824a28.858182 28.858182 0 0 0-29.370182-16.290909c-0.837818 0.093091-4.096 0.837818-12.89309 5.585454-8.517818 4.561455-19.549091 11.450182-35.793455 21.597091l-109.940364 68.701091a148.573091 148.573091 0 0 1-172.450909-10.705455c-37.282909-30.254545-91.694545-26.344727-124.276363 8.936728l-38.958546 42.263272a28.858182 28.858182 0 0 1-42.356363-39.144727l39.00509-42.216727a148.619636 148.619636 0 0 1 202.938182-14.568727c30.161455 24.529455 72.610909 27.136 105.518546 6.516363l109.940363-68.701091c15.592727-9.728 28.439273-17.780364 39.051637-23.505454 10.379636-5.585455 21.504-10.565818 33.559272-11.962182 36.770909-4.282182 72.145455 15.36 88.064 48.733091 5.213091 10.984727 6.842182 23.086545 7.58691 34.909091 0.791273 11.962182 0.791273 27.136 0.791272 45.521454 0 57.250909 0.372364 93.090909-9.681454 122.740364a182.551273 182.551273 0 0 1-114.222546 114.176c-29.649455 10.053818-65.442909 9.681455-122.693818 9.681454H414.999273c-42.542545 0-76.241455 0-103.330909-2.187636-27.368727-2.234182-50.548364-6.981818-71.726546-17.687273a182.551273 182.551273 0 0 1-79.778909-79.825454c-10.798545-21.178182-15.499636-44.357818-17.733818-71.773091-2.234182-27.089455-2.187636-60.741818-2.187636-103.330909z" fill=#dbdbdb p-id=1705></path> <path d="M756.224 99.746909c9.728-24.482909 45.707636-24.482909 55.435636 0l1.629091 5.585455 2.420364 9.821091a135.121455 135.121455 0 0 0 102.865454 95.557818c32.023273 6.516364 32.023273 52.177455 0 58.740363a135.168 135.168 0 0 0-105.285818 105.285819c-6.516364 31.976727-52.177455 31.976727-58.740363 0a135.168 135.168 0 0 0-105.332364-105.285819c-31.976727-6.562909-31.976727-52.177455 0-58.740363l9.774545-2.420364a135.168 135.168 0 0 0 95.557819-102.958545l1.675636-5.585455z m27.694545 83.316364c-14.754909 22.807273-34.164364 42.263273-56.971636 57.018182 22.807273 14.754909 42.216727 34.164364 56.971636 56.971636 14.754909-22.807273 34.210909-42.216727 56.971637-56.971636a192.930909 192.930909 0 0 1-56.971637-57.018182zM361.192727 395.682909v-1.861818a38.4 38.4 0 1 1 76.846546 0v1.861818a38.446545 38.446545 0 1 1-76.8 0z" fill=#dbdbdb p-id=1706></path> </svg> </div> <span>AI 精修</span> </div> <div class=quick-item onclick='window.location.href="中型测试.html?mode=chuangy"'> <div class=quick-icon> <svg height=20 viewBox="0 0 1024 1024" width=20 class=icon p-id=6831 t=1789392081669 version=1.1 xmlns=http://www.w3.org/2000/svg> <path d="M1006.848 450.368l-67.84 479.808H799.36l54.912-370.048a134.4 134.4 0 0 1 132.096-109.696l20.48-0.064zM400 166.4l277.632 763.776h-139.52l-56.256-162.24-6.016-4.288H216.256L210.176 768l-55.744 162.176H14.4L292.032 166.4H400z m-53.76 190.848l-95.232 287.104h191.104L346.24 357.248z m373.44-240.768l23.488 109.248a128 128 0 0 0 87.36 95.36l55.488 17.152-55.488 17.088a128 128 0 0 0-87.36 95.424l-23.488 109.248-23.488-109.248a128 128 0 0 0-87.36-95.36l-55.488-17.152 55.488-17.088a128 128 0 0 0 87.36-95.424l23.488-109.248zM920.256 35.712l16.128 59.264a64 64 0 0 0 39.488 43.136l36.16 13.44-36.736 13.568a64 64 0 0 0-39.232 42.24l-15.808 54.656-15.872-54.72a64 64 0 0 0-39.232-42.176l-36.736-13.632 36.16-13.44a64 64 0 0 0 39.488-43.072l16.192-59.264z" fill=#dbdbdb p-id=6832></path> </svg> </div> <span>创意生成</span> </div> <div class=quick-item onclick='window.location.href="中型测试.html?mode=iceps"'> <div class=quick-icon> <svg height=24 viewBox="0 0 24 24" width=24 fill=none stroke=currentColor stroke-width=2> <line x1=4 x2=4 y1=21 y2=14 /> <line x1=4 x2=4 y1=10 y2=3 /> <line x1=12 x2=12 y1=21 y2=12 /> <line x1=12 x2=12 y1=8 y2=3 /> <line x1=20 x2=20 y1=21 y2=16 /> <line x1=20 x2=20 y1=12 y2=3 /> <line x1=1 x2=7 y1=14 y2=14 /> <line x1=9 x2=15 y1=8 y2=8 /> <line x1=17 x2=23 y1=16 y2=16 /> </svg> </div> <span>专业精修</span> </div> </div> <div class=feature-cards-section> <div class=section-header> <h2 class=section-title>热门功能</h2> <a href=http://www.iceai.cc class=section-more target=_blank>查看更多 &gt;</a> </div> <div class=feature-cards-scroll> <div class=feature-card> <div class=card-image> <img alt=一键修图 src=images/一键修图.jpg> </div> <div class=card-info> <h3 class=card-title>一键修图</h3> <p class=card-desc>智能优化色彩、亮度、对比度</p> </div> </div> <div class=feature-card> <div class=card-image> <img alt=质感磨皮 src=images/质感磨皮.jpg> </div> <div class=card-info> <h3 class=card-title>质感磨皮</h3> <p class=card-desc>保留皮肤纹理的自然磨皮效果</p> </div> </div> <div class=feature-card> <div class=card-image> <img alt=祛除瑕疵 src=images/祛除瑕疵.jpg> </div> <div class=card-info> <h3 class=card-title>祛除瑕疵</h3> <p class=card-desc>智能去除痘痘、斑点等瑕疵</p> </div> </div> <div class=feature-card> <div class=card-image> <img alt=统一肤色 src=images/统一肤色.JPG> </div> <div class=card-info> <h3 class=card-title>统一肤色</h3> <p class=card-desc>自动调整肤色均匀度</p> </div> </div> <div class=feature-card> <div class=card-image> <img alt=AI仿色 src=images/AI仿色.JPG> </div> <div class=card-info> <h3 class=card-title>AI 仿色</h3> <p class=card-desc>参考图片智能调整色调风格</p> </div> </div> <div class=feature-card> <div class=card-image> <img alt=一键证件照 src=images/一键证件照.JPG> </div> <div class=card-info> <h3 class=card-title>一键证件照</h3> <p class=card-desc>自动生成标准尺寸证件照</p> </div> </div> </div> </div> <div class=announce-section> <div class=section-header> <h2 class=section-title>公告</h2> </div> <div class=announce-card> <span class=announce-ver>温馨提示</span> <span class=announce-date>2026-09-15</span> <span class=announce-text>该版本为内测版，非正式版，可能会存在一些未知问题。</span> </div> </div> </div> <div class=tab-content id=localContent> <p class=local-content-title>本地项目</p> <div class=project-list id=projectList> </div> </div> <div class=tab-content id=recycleContent> <p class=local-content-title>系统设置</p> <div class=settings-container style=display:flex;gap:10px></div> <div class=setting-item> <p class=setting-tile>联机拍摄</p> <div class=setting-content> <div class=setting-content-camera><span class=setting-content-text>联机进程</span><span class=setting-content-detail>通过有线连接相机与电脑，若连接失败或卡顿，请刷新联机进程</span></div><button class=header-buttons1>刷新相机</button> </div> </div> <div class=setting-item> <div class=setting-item> <p class=setting-tile>软件更新</p> <div class=setting-content style=display:block> <div style=display:flex;align-items:center;gap:12px;flex-wrap:wrap> <span style=color:#ccc;font-size:13px>当前版本 <b id=xcCurVer>4.2.0</b></span> <span id=xcUpdateStatus style=color:#8a8a93;font-size:13px>未检查</span> <button id=xcCheckUpdateBtn type=button style="margin-left:auto;padding:7px 16px;background:linear-gradient(135deg,#0187ff,#5b7cfa);color:#fff;border:none;border-radius:7px;font-size:12.5px;cursor:pointer">检查更新</button> </div> <div id=xcUpdateDetail style="display:none;margin-top:12px;padding:12px;background:#161616;border:1px solid #2a2a2a;border-radius:8px;color:#ccc;font-size:13px;line-height:1.7"> <div id=xcUpdateNotes></div> <button id=xcUpdateNowBtn type=button style="margin-top:10px;padding:8px 20px;background:#2d8a4e;color:#fff;border:none;border-radius:7px;font-size:13px;cursor:pointer">立即更新并重启</button> </div> </div> </div> <div class=setting-item> <p class=setting-tile>精修模块</p> <div class=setting-content> <div class=setting-content-camera><span class=setting-content-text>精修进程</span><span class=setting-content-detail>若AI精修无响应或解析失败，请点击刷新进程</span> </div><span id=serverRestartStatus style=font-size:14px></span><button class=header-buttons1 id=serverStatusBtn>状态<span id=serverStatus style=background-color:#ff6b6b;color:#fff;padding:2px;margin-left:10px;border-radius:3px>异常</span></button> <button class=header-buttons1 id=restartServerBtn>刷新进程</button> </div> <div class=setting-content> <div class=setting-content-camera> <span class=setting-content-text>预览图像尺寸（px）</span> <span class=setting-content-detail>仅影响实时预览速度、预览尺寸越低速度越快，不影响导出，导出仍按照原图尺寸</span> <span class=setting-content-detail>提示：仅对之后新建/导入的项目生效，已存档项目保持保存时的档位</span> </div> <div class=wp-select> <button class=wp-select-btn id=workingPxBtn type=button>3000px<span class=wp-caret></span></button> <div class=wp-select-menu id=workingPxMenu> <div class=wp-select-item data-px=2000>2000px</div> <div class=wp-select-item data-px=3000>3000px</div> <div class=wp-select-item data-px=4000>4000px</div> </div> </div> </div> </div>  </div> <div class="tab-content" id=adminContent>
+<p class=local-content-title>管理员系统</p>
+<div id=xcPwdView class=xc-admin-wrap>
+  <div class=xc-admin-card style="max-width:420px;margin:60px auto 0;">
+    <div class=xc-admin-head>
+      <div class=xc-admin-icon>🔒</div>
+      <div>
+        <div class=xc-admin-title>管理员验证</div>
+        <div class=xc-admin-sub>此区域仅限最高权限管理员访问</div>
+      </div>
+    </div>
+    <div class=xc-admin-row style="flex-direction:column;align-items:stretch;">
+      <div class=xc-field>
+        <label class=xc-label>管理员密码</label>
+        <input id=xcAdminPwd placeholder=输入管理员密码 type=password class=xc-input>
+      </div>
+      <div id=xcPwdErr style="color:#ff6b6b;font-size:12px;min-height:16px;"></div>
+      <button id=xcPwdBtn type=button class=xc-btn-primary style="width:100%;">验证并进入</button>
+    </div>
+  </div>
+</div>
+<div id=xcAdminView class=xc-admin-wrap style="display:none;">
+  <div class=xc-admin-card>
+    <div class=xc-admin-head>
+      <div class=xc-admin-icon>🛡️</div>
+      <div>
+        <div class=xc-admin-title>令牌签发</div>
+        <div class=xc-admin-sub>生成用户访问令牌 · 明文仅显示一次</div>
+      </div>
+      <span class=xc-admin-badge>最高权限</span>
+    </div>
+    <div class=xc-admin-row>
+      <div class=xc-field xc-field-sm>
+        <label class=xc-label>数量</label>
+        <input id=genCountInApp type=number min=1 max=50 value=1 class=xc-input>
+      </div>
+      <button id=genBtnInApp type=button class=xc-btn-primary>生成令牌</button>
+      <button id=listBtnInApp type=button class=xc-btn-ghost>刷新列表</button>
+    </div>
+    <div id=genOutInApp class=xc-gen-out></div>
+    <div class=xc-token-head>
+      <span class=xc-label>有效令牌</span>
+      <span id=tokenCountInApp class=xc-count>0</span>
+    </div>
+    <div id=tokenListInApp class=xc-token-list>（未加载）</div>
+  </div>
+
+  <div class=xc-admin-card style="margin-top:20px;">
+    <div class=xc-admin-head>
+      <div class=xc-admin-icon style="background:linear-gradient(135deg,#f59e0b,#ef4444);">🚀</div>
+      <div>
+        <div class=xc-admin-title>版本发布</div>
+        <div class=xc-admin-sub>把当前程序打包为新版本，推送到更新源，用户端将收到更新推送</div>
+      </div>
+    </div>
+    <div class=xc-admin-row style="flex-direction:column;align-items:stretch;gap:10px;">
+      <div class=xc-field>
+        <label class=xc-label>新版本号（x.y.z）</label>
+        <input id=relVersion class=xc-input placeholder="例如 4.2.1">
+      </div>
+      <div class=xc-field>
+        <label class=xc-label>更新说明（将展示给用户）</label>
+        <textarea id=relNotes class=xc-input rows=3 placeholder="本次更新内容…"></textarea>
+      </div>
+      <button id=relPrepareBtn type=button class=xc-btn-primary>生成发布包</button>
+      <div id=relOut class=xc-gen-out></div>
+      <div style="color:#8a8a93;font-size:12px;line-height:1.6;">生成后需执行推送：<code style="background:#161616;padding:2px 6px;border-radius:4px;">_rea_analysis\push_release.ps1</code> 会把发布包上传到 GitHub 更新源。</div>
+    </div>
+  </div> </div> <div class=system-footer> <p class=footer-text>虽然它现在还不够完美，但我们持续打磨中，欢迎加入小彻工坊，提供宝贵意见！</p> <p class=footer-text>小彻工坊 &nbsp;&nbsp;&nbsp;<a href=http://www.iceai.cc/help.html class=footer-link target=_blank>使用教程</a></p> </div> </div> <script>!function(){var e=document.getElementById("workingPxBtn"),t=document.getElementById("workingPxMenu");if(e&&t){var n=localStorage.getItem("workingPxDefault");-1===["2000","3000","4000"].indexOf(n)&&(n="3000",localStorage.setItem("workingPxDefault","3000")),e.innerHTML=n+'px<span class="wp-caret"></span>',e.addEventListener("click",function(e){e.stopPropagation(),t.classList.toggle("open")}),document.addEventListener("click",function(){t.classList.remove("open")}),t.addEventListener("click",function(n){var a,o=n.target.closest(".wp-select-item");o&&(a=o.dataset.px,e.innerHTML=a+'px<span class="wp-caret"></span>',localStorage.setItem("workingPxDefault",a),t.classList.remove("open"))})}}()</script> <script>
+// 管理员面板逻辑（仅 sessionStorage.adminMode==='1' 可见）
+(function(){
+  function init(){
+    var isAdmin = sessionStorage.getItem('adminMode') === '1';
+    var item = document.getElementById('adminPanelItem');
+    if (!item) return;
+    if (!isAdmin) { item.style.display = 'none'; return; }
+    item.style.display = '';
+    var pwdIn = document.getElementById('adminPassInApp');
+    var out = document.getElementById('genOutInApp');
+    var list = document.getElementById('tokenListInApp');
+    async function refreshList(){
+      try {
+        var r = await window.tokenGate.adminListTokens();
+        list.textContent = r.tokens.length ? r.tokens.map(function(h,i){return (i+1)+'. '+h.slice(0,12)+'…';}).join('\n') : '（空）';
+      } catch(e){ list.textContent = '加载失败: '+e.message; }
+    }
+    document.getElementById('listBtnInApp').addEventListener('click', refreshList);
+    document.getElementById('genBtnInApp').addEventListener('click', async function(){
+      out.textContent = '';
+      var pwd = pwdIn.value;
+      if (!pwd) { out.style.color='#ff6b6b'; out.textContent='请输入管理员密码'; return; }
+      var n = Number(document.getElementById('genCountInApp').value) || 1;
+      try {
+        var r = await window.tokenGate.adminGenerateToken({password: pwd, count: n});
+        if (r.ok) {
+          out.style.color='#7fd48a';
+          out.textContent = '新令牌（仅显示一次，请复制保存）：\n' + r.tokens.join('\n');
+          refreshList();
+        } else {
+          out.style.color='#ff6b6b';
+          out.textContent = r.error || '生成失败';
+        }
+      } catch(e){ out.style.color='#ff6b6b'; out.textContent = '失败: '+e.message; }
+    });
+    refreshList();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+</script>  <script>
+// 退出登录：清除持久化登录态
+(function(){
+  function bind(){
+    var l = document.getElementById('logoutLink');
+    if (!l || l.dataset.bound) return;
+    l.dataset.bound = '1';
+    l.addEventListener('click', function(){
+      try {
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('xiacheToken');
+        localStorage.removeItem('lastLogin');
+        sessionStorage.clear();
+      } catch(e) {}
+    }, true);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
+  else bind();
+})();
+</script> <script>
+// 管理员系统页逻辑 v3：入口始终可见，进入需密码；会话内验证一次
+(function(){
+  function switchTo(pageId, btn){
+    document.querySelectorAll('.tab-content').forEach(function(t){ t.classList.remove('active'); });
+    var pg = document.getElementById(pageId);
+    if (pg) pg.classList.add('active');
+    document.querySelectorAll('.sidebar button').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+  }
+
+  function init(){
+    var btn = document.getElementById('adminBtn');
+    var page = document.getElementById('adminContent');
+    if (!btn || !page) return;
+
+    var pwdIn = document.getElementById('xcAdminPwd');
+    var pwdErr = document.getElementById('xcPwdErr');
+    var pwdView = document.getElementById('xcPwdView');
+    var adminView = document.getElementById('xcAdminView');
+    var out = document.getElementById('genOutInApp');
+    var list = document.getElementById('tokenListInApp');
+    var cnt = document.getElementById('tokenCountInApp');
+
+    // 包装 adminLogin：验证成功缓存密码到 sessionStorage（生成令牌需要）
+    var origLogin = window.tokenGate.adminLogin.bind(window.tokenGate);
+    window.tokenGate.adminLogin = function(pwd){
+      return origLogin(pwd).then(function(r){
+        if (r && r.ok) sessionStorage.setItem('xcAdminPwd', pwd);
+        return r;
+      });
+    };
+
+    function tryVerify(){
+      var pwd = pwdIn.value;
+      if (!pwd) { pwdErr.textContent = '请输入管理员密码'; return; }
+      window.tokenGate.adminLogin(pwd).then(function(r){
+        if (r && r.ok) {
+          pwdErr.textContent = '';
+          pwdIn.value = '';
+          pwdView.style.display = 'none';
+          adminView.style.display = '';
+          refreshList();
+        } else {
+          pwdErr.textContent = (r && r.error) || '密码错误';
+        }
+      }).catch(function(e){ pwdErr.textContent = '验证失败: ' + e.message; });
+    }
+    document.getElementById('xcPwdBtn').addEventListener('click', tryVerify);
+    pwdIn.addEventListener('keydown', function(e){ if (e.key === 'Enter') tryVerify(); });
+
+    btn.addEventListener('click', function(){
+      var verified = sessionStorage.getItem('xcAdminPwd') ? true : false;
+      switchTo('adminContent', btn);
+      if (verified) {
+        pwdView.style.display = 'none';
+        adminView.style.display = '';
+        refreshList();
+      } else {
+        pwdView.style.display = '';
+        adminView.style.display = 'none';
+        setTimeout(function(){ pwdIn.focus(); }, 60);
+      }
+    });
+
+    function refreshList(){
+      window.tokenGate.adminListTokens().then(function(r){
+        cnt.textContent = r.tokens.length;
+        list.textContent = r.tokens.length
+          ? r.tokens.map(function(h,i){ return (i+1)+'.  '+h.slice(0,14)+'…'; }).join('\n')
+          : '（暂无令牌，点击上方"生成令牌"创建）';
+      }).catch(function(e){ list.textContent = '加载失败: ' + e.message; });
+    }
+
+    document.getElementById('listBtnInApp').addEventListener('click', refreshList);
+    document.getElementById('genBtnInApp').addEventListener('click', async function(){
+      out.classList.add('show');
+      var cached = sessionStorage.getItem('xcAdminPwd');
+      if (!cached) { out.style.color = '#ff6b6b'; out.textContent = '管理员会话已过期，请重新验证密码'; return; }
+      var n = Number(document.getElementById('genCountInApp').value) || 1;
+      try {
+        var r = await window.tokenGate.adminGenerateToken({password: cached, count: n});
+        if (r.ok) {
+          out.style.color = '#7fd48a';
+          out.textContent = '✓ 生成成功（明文仅显示一次，请立即复制发给用户）：\n\n' + r.tokens.join('\n');
+          refreshList();
+        } else {
+          out.style.color = '#ff6b6b';
+          out.textContent = r.error || '生成失败';
+        }
+      } catch(e){ out.style.color = '#ff6b6b'; out.textContent = '失败: '+e.message; }
+    });
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+</script> <script src=js/vendor/hmj68.js></script> <script src=js/vendor/click_version.js></script> <script src=js/system.js></script> <script src=js/vendor/updatemessage.js></script> <script src=js/native_worker_client.js></script> <script src=js/project_manager.js></script> <script>
+// 更新系统逻辑（用户端 + 管理员发布端）
+(function(){
+  function init(){
+    // ===== 用户端：检查更新 =====
+    var btn = document.getElementById('xcCheckUpdateBtn');
+    if (!btn) return;
+    var status = document.getElementById('xcUpdateStatus');
+    var detail = document.getElementById('xcUpdateDetail');
+    var notesEl = document.getElementById('xcUpdateNotes');
+    var nowBtn = document.getElementById('xcUpdateNowBtn');
+    var checking = false;
+
+    btn.addEventListener('click', async function(){
+      if (checking) return;
+      checking = true;
+      btn.textContent = '检查中…';
+      status.textContent = '';
+      try {
+        var r = await window.updateAPI.check();
+        if (!r.ok) {
+          status.style.color = '#ff6b6b';
+          status.textContent = r.error;
+        } else if (!r.hasUpdate) {
+          status.style.color = '#7fd48a';
+          status.textContent = '已是最新版本 v' + r.current;
+        } else {
+          status.style.color = '#f59e0b';
+          status.textContent = '发现新版本 v' + r.latest;
+          detail.style.display = 'block';
+          notesEl.innerHTML = '<b style="color:#fff">v' + r.latest + '</b> <span style="color:#8a8a93">' + (r.publishedAt || '') + '</span><br>' + (r.notes || '').replace(/\n/g, '<br>');
+          nowBtn.dataset.url = r.asarUrl;
+        }
+      } catch(e) {
+        status.style.color = '#ff6b6b';
+        status.textContent = '检查失败: ' + e.message;
+      }
+      btn.textContent = '检查更新';
+      checking = false;
+    });
+
+    nowBtn.addEventListener('click', async function(){
+      var url = nowBtn.dataset.url;
+      if (!url) return;
+      nowBtn.textContent = '下载中…';
+      nowBtn.disabled = true;
+      var r = await window.updateAPI.download(url);
+      if (!r.ok) {
+        nowBtn.textContent = '下载失败';
+        nowBtn.disabled = false;
+        return;
+      }
+      nowBtn.textContent = '正在应用更新…';
+      var r2 = await window.updateAPI.apply();
+      if (r2.ok) {
+        nowBtn.textContent = '✓ 更新完成，正在重启…';
+        setTimeout(function(){ location.reload(); }, 1500);
+      } else {
+        nowBtn.textContent = r2.error || '更新失败';
+        nowBtn.disabled = false;
+      }
+    });
+
+    // ===== 管理员端：版本发布 =====
+    var relBtn = document.getElementById('relPrepareBtn');
+    if (!relBtn) return;
+    relBtn.addEventListener('click', async function(){
+      var out = document.getElementById('relOut');
+      out.classList.add('show');
+      var pwd = sessionStorage.getItem('xcAdminPwd');
+      if (!pwd) { out.style.color = '#ff6b6b'; out.textContent = '请先在本页上方输入管理员密码验证'; return; }
+      var ver = document.getElementById('relVersion').value.trim();
+      var notes = document.getElementById('relNotes').value;
+      if (!ver) { out.style.color = '#ff6b6b'; out.textContent = '请输入新版本号'; return; }
+      relBtn.textContent = '正在打包…';
+      relBtn.disabled = true;
+      try {
+        var r = await window.updateAPI.prepareRelease({ password: pwd, version: ver, notes: notes });
+        if (r.ok) {
+          out.style.color = '#7fd48a';
+          out.textContent = '✓ 发布包已生成：\n' + r.outDir + '\n\n包含 version.json + app-' + ver + '.asar\n下一步：运行 push_release.ps1 推送到 GitHub。';
+        } else {
+          out.style.color = '#ff6b6b';
+          out.textContent = r.error || '打包失败';
+        }
+      } catch(e) {
+        out.style.color = '#ff6b6b';
+        out.textContent = '失败: ' + e.message;
+      }
+      relBtn.textContent = '生成发布包';
+      relBtn.disabled = false;
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+</script> </body> </html>

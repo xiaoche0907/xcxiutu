@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Build artifacts
+*.asar
+release/
+dist/
+
+# Runtime
+*.log
+*.tmp
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Local credentials - NEVER commit
+admin.key
+token.key

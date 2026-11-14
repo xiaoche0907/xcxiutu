@@ -1,0 +1,127 @@
+<!doctype html> <html lang=zh-CN> <head> <meta charset=UTF-8> <meta content="width=device-width,initial-scale=1" name=viewport> <title>小彻工坊</title> <link href=images/Llogo.png rel=icon type=image/png> <link href=css/login_css.css rel=stylesheet> <link href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css rel=stylesheet> </head> <body> <div class=background-container> <div class=gradient-overlay></div> </div> <div class=header1> <div class=logo></div> </div> <div class=main-content> <div class=brand-section><a class=brand-link> <h1 class=brand-title>小彻工坊</h1> <p class=brand-subtitle>开启你的修图之旅～</p> </a></div> <div class=login-section> <div class=login-card> <div class=login-header> <h2 id=loginTitle>令牌登录</h2> </div> <form class=login-form id=loginForm> <div id=userArea> <div class=input-group> <div class=input-icon><i class="fas fa-key"></i></div><input id=tokenInput placeholder=请输入访问令牌 autocomplete=off> </div> </div> <div id=adminArea style=display:none> <div class=input-group> <div class=input-icon><i class="fas fa-user-shield"></i></div><input id=adminPass placeholder=管理员密码 type=password> </div> </div> <div class=error-message id=errorDisplay></div> <div class=terms-group><label class=checkbox-container><input id=termsCheckbox type=checkbox><span class=checkmark></span></label> <p class=terms-text>登录视为您已阅读并同意 <a class=terms-link href=server.html>服务条款</a> 和 <a class=terms-link href=server.html>隐私政策</a></p> </div><button class=submit-btn type=submit id=submitBtn>进入</button> <div class=login-footer><a class=footer-link id=modeToggle style=cursor:pointer>管理员入口</a></div> </form> <div id=adminPanel style="display:none;padding:16px;"> <h3 style="color:#fff;margin:0 0 12px;">令牌管理</h3> <div style="display:flex;gap:8px;margin-bottom:12px;"> <button type=button id=genBtn style="flex:1;padding:10px;background:#0187ff;color:#fff;border:none;border-radius:6px;cursor:pointer;">生成 1 个新令牌</button> <input id=genCount type=number min=1 max=50 value=1 style="width:70px;padding:8px;border-radius:6px;border:1px solid #444;background:#222;color:#fff;"> </div> <div id=tokenList style="max-height:180px;overflow:auto;font-size:12px;color:#ccc;background:#1a1a1a;border-radius:6px;padding:8px;">加载中...</div> <div id=generated style="margin-top:10px;font-size:13px;color:#7fd48a;white-space:pre-wrap;"></div> <button type=button id=enterAppBtn style="margin-top:14px;width:100%;padding:10px;background:#2d8a4e;color:#fff;border:none;border-radius:6px;cursor:pointer;">以管理员身份进入应用</button> </div> </div> </div> </div> <footer class=site-footer>Copyright © 2026 小彻工坊</footer> <script>
+(function(){
+  var isAdmin = false;
+
+  // 自动登录：上次令牌验证通过后 30 天内重启免输入
+  (function(){
+    try {
+      var logged = localStorage.getItem('isLoggedIn') === 'true';
+      var last = Number(localStorage.getItem('lastLogin') || 0);
+      var token = localStorage.getItem('xiacheToken');
+      if (logged && token && last && (Date.now() - last) < 30*24*3600*1000) {
+        document.addEventListener('DOMContentLoaded', function(){
+          setTimeout(function(){ location.replace('home.html'); }, 300);
+        });
+      }
+    } catch(e) {}
+  })();
+  var adminPassword = '';
+  var err = document.getElementById('errorDisplay');
+  function showErr(m){ err.textContent = m; err.style.display = 'block'; }
+  function hideErr(){ err.style.display = 'none'; }
+
+  // ---- 用户令牌登录 ----
+  var form = document.getElementById('loginForm');
+  form.addEventListener('submit', async function(e){
+    e.preventDefault(); hideErr();
+    if (!isAdmin) {
+      var token = document.getElementById('tokenInput').value.trim();
+      if (!token) return showErr('请输入访问令牌');
+      if (!window.tokenGate) return showErr('令牌模块未加载');
+      try {
+        var r = await window.tokenGate.verifyToken(token);
+        if (r && r.ok) {
+          sessionStorage.setItem('adminMode', r.admin ? '1' : '0');
+          localStorage.setItem('isLoggedIn', 'true');
+          localStorage.setItem('lastLogin', Date.now().toString());
+          localStorage.setItem('xiacheToken', token);
+          location.href = 'home.html';
+        } else {
+          showErr(r && r.error ? r.error : '令牌无效');
+        }
+      } catch (ex) { showErr('验证失败: ' + ex.message); }
+    }
+  });
+
+  // ---- 模式切换 ----
+  document.getElementById('modeToggle').addEventListener('click', function(){
+    isAdmin = !isAdmin;
+    document.getElementById('userArea').style.display = isAdmin ? 'none' : '';
+    document.getElementById('adminPanel').style.display = isAdmin ? 'block' : 'none';
+    document.getElementById('termsGroupHide') && 0;
+    document.querySelector('.terms-group').style.display = isAdmin ? 'none' : '';
+    document.getElementById('submitBtn').style.display = isAdmin ? 'none' : '';
+    document.getElementById('loginTitle').textContent = isAdmin ? '管理员 · 令牌管理' : '令牌登录';
+    document.getElementById('modeToggle').textContent = isAdmin ? '返回令牌登录' : '管理员入口';
+    hideErr();
+    if (isAdmin) loadTokens();
+  });
+
+  // ---- 管理员：列出令牌（显示哈希前 8 位） ----
+  async function loadTokens(){
+    var box = document.getElementById('tokenList');
+    try {
+      var r = await window.tokenGate.adminListTokens();
+      box.textContent = r.tokens.length
+        ? r.tokens.map(function(h,i){ return (i+1) + '. ' + h.slice(0,10) + '…'; }).join('\n')
+        : '（空）';
+    } catch(e) { box.textContent = '加载失败: ' + e.message; }
+  }
+
+  // ---- 管理员：生成令牌 ----
+  document.getElementById('genBtn').addEventListener('click', async function(){
+    hideErr();
+    var pwd = document.getElementById('adminPass').value;
+    if (!pwd) return showErr('请先输入管理员密码');
+    var n = Number(document.getElementById('genCount').value) || 1;
+    try {
+      var r = await window.tokenGate.adminGenerateToken({ password: pwd, count: n });
+      if (r.ok) {
+        document.getElementById('generated').textContent = '新令牌（仅显示一次，请复制保存）：\n' + r.tokens.join('\n');
+        loadTokens();
+      } else {
+        showErr(r.error || '生成失败');
+      }
+    } catch(e) { showErr('生成失败: ' + e.message); }
+  });
+
+  // ---- 管理员进入应用 ----
+  document.getElementById('enterAppBtn').addEventListener('click', async function(){
+    hideErr();
+    var pwd = document.getElementById('adminPass').value;
+    if (!pwd) return showErr('请先输入管理员密码');
+    try {
+      var r = await window.tokenGate.adminLogin(pwd);
+      if (r.ok) {
+        sessionStorage.setItem('adminMode', '1');
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('lastLogin', Date.now().toString());
+        location.href = 'home.html';
+      } else {
+        showErr(r.error || '密码错误');
+      }
+    } catch(e) { showErr('验证失败: ' + e.message); }
+  });
+
+  // ---- 原生模块诊断（保留原逻辑） ----
+  (async()=>{
+    let e=0;
+    const o=async()=>{
+      if(void 0!==window.electronAPI&&window.electronAPI.diagnoseNativeModule){
+        try{
+          const r=await window.electronAPI.diagnoseNativeModule();
+          !r.success&&r.error&&window.electronAPI.showErrorLog(r.error);
+        }catch(err){console.error('Diagnosis failed:',err)}
+        return!0;
+      }
+      return!1;
+    };
+    if(!await o()){
+      const t=setInterval(async()=>{
+        e++;
+        (await o()||e>=50)&&clearInterval(t);
+      },100);
+    }
+  })();
+})();
+</script> <script>(async()=>{let e=0;const o=async()=>{if(void 0!==window.electronAPI&&window.electronAPI.diagnoseNativeModule){try{const e=await window.electronAPI.diagnoseNativeModule();!e.success&&e.error&&window.electronAPI.showErrorLog(e.error)}catch(e){console.error("Diagnosis failed:",e)}return!0}return!1};if(!await o()){const r=setInterval(async()=>{e++,(await o()||e>=50)&&clearInterval(r)},100)}})()</script> </body> </html>

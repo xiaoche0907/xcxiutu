@@ -1,0 +1,704 @@
+<!doctype html> 
+<html lang=zh-CN> 
+  <head> 
+    <meta charset=UTF-8> 
+    <title>小彻工坊
+    </title> 
+    <link href=css/dbj_kiajueja.css rel=stylesheet> 
+    <link href=css/csgdt_shskhjws.css rel=stylesheet> 
+    <link href=css/cdsjfh_sjahduen.css rel=stylesheet> 
+    <link href=css/tpllq_sabkdhg.css rel=stylesheet> 
+    <link href=css/dpsk_shkaeebj.css rel=stylesheet> 
+    <link href=css/hyxftc_tyoajsh.css rel=stylesheet> 
+    <link href=css/yqwh_njhjkioa.css rel=stylesheet> 
+    <link href=css/zgjlxfts_sahjkgdyas.css rel=stylesheet> 
+    <link href=css/yhbj_saqdjrlty.css rel=stylesheet> 
+    <link href=css/mbxg_shuhatlty.css rel=stylesheet> 
+    <link href=css/clxt_ashjssra.css rel=stylesheet> 
+    <script>
+// 本地令牌守卫：未通过令牌验证则跳回登录页
+(function(){
+  if(localStorage.getItem('isLoggedIn')!=='true'){
+    location.replace('login.html');
+  }
+})();
+
+    </script>
+    <script src=js/vendor/utils.js></script> 
+    <script src=js/vendor/font.js>
+    </script> 
+    <script src=js/vendor/face_detection.js>
+    </script> 
+    <script src=js/blaze_wasm.js>
+    </script> 
+    <script src=js/mp_load.js type=module>
+    </script> 
+  </head> 
+  <body> 
+    <div class=main-container> 
+      <div class=header>
+        <img src=images/Llogo_jb.png class=logo draggable=false> 
+        <h2 class=logo_title10086>小彻工坊
+        </h2>
+        <a class=logo_title_210086>&nbsp;
+        </a> 
+        <div class=button-group> 
+          <button class=view-toggle id=showCamera>联机拍摄
+          </button> 
+          <button class="view-toggle active" id=showIceai>AI 精修
+          </button> 
+          <button class=view-toggle id=showChuangy>创意生成
+          </button> 
+          <button class=view-toggle id=showIceps>专业精修
+          </button> 
+          <div class=underline-slider-header>
+          </div> 
+        </div> 
+        <div class=header-right> 
+          <button class=header-buttons1>云端同步
+            <span class=cloudClodtips>未开放
+            </span>
+          </button> 
+          <div class=person style=position:relative> 
+            <span style="content:'';position:absolute;left:0;top:20%;height:60%;width:1px;background-color:#5b5b5b">
+            </span> 
+            <img src=css/icon-task.svg height=25 width=25 alt=任务 class=task-avatar> 
+            <img src=css/icon-user.svg height=25 width=25 alt=用户 class=user-avatar> 
+            <span style="content:'';position:absolute;right:0;top:20%;height:60%;width:1px;background-color:#5b5b5b">
+            </span> 
+            <div class=person-content>
+              <a class=person-vip-content-text>剩余张数/总张数
+              </a>
+              <a class=person-vip-content-text style=font-size:16px>150001/20万张
+              </a>
+              <a id=systemSettingsLink>系统设置
+              </a>
+              <a id=updateLink href=#>检测更新
+              </a>
+              <a id=abouticeai href=#>关于作者
+              </a>
+              <a id=donateLink href=#>捐赠
+              </a>
+              <a id=toggleNewDot href=#>隐藏标点
+              </a>
+              <a href=login.html>退出登录
+              </a> 
+            </div> 
+          </div> 
+          <button class=header-button id=out_save_image style=display:block>导出图片
+          </button> 
+          <button class=header-button id=chuangy_out_save_image style=display:none>导出创意
+          </button> 
+        </div> 
+      </div> 
+      <div class=container id=surveyView> 
+        <form id=surveyForm>
+        </form> 
+        <div class="horizontal-container first"> 
+          <div class="vertical-container red"> 
+            <div class=left-tool-tip style="padding:0 10px 0;position:relative"> 
+              <span style="content:'';position:absolute;right:0;top:30%;height:40%;width:1px;background-color:#5b5b5b">
+              </span> 
+              <button class="homepage-button left-list-button" id=homepage-button onclick=goHome()> 
+                <img src=css/icon-home.svg height=20 width=100% alt=首页 class=icon> 
+              </button> 
+            </div> 
+            <div class=zoom-value id=zoomValue>100%
+            </div> 
+            <div class=zoom-dropdown-container1>
+              <button class=zoom-dropdown-btn1 id=zoomDropdownBtn>▼
+              </button> 
+              <div class=zoom-dropdown-menu1 id=zoomDropdownMenu> 
+                <div class=zoom-option1 data-action=reset>合适
+                </div> 
+                <div class=zoom-option1 data-scale=0.5>50%
+                </div> 
+                <div class=zoom-option1 data-scale=1>100%
+                </div> 
+                <div class=zoom-option1 data-scale=2>200%
+                </div> 
+                <div class=zoom-option1 data-scale=3>300%
+                </div> 
+                <div class=zoom-option1 data-scale=4>400%
+                </div> 
+                <div class=zoom-option1 data-scale=5>500%
+                </div> 
+              </div> 
+            </div> 
+            <div class=left-tool-tip> 
+              <button class="drag-button left-list-button" id=drag-button001> 
+                <img src=css/icon-drag.svg height=20 width=100% alt=拖拽工具 class=icon> 
+              </button> 
+              <span class=left-tool-tiptext>拖拽工具
+              </span> 
+            </div> 
+            <div class=left-tool-tip> 
+              <button class="free-liquefaction-button left-list-button" id=free-liquefaction-button001> 
+                <img src=css/icon-liquefaction.svg height=22 width=20 alt=液化工具 class=icon>
+              </button> 
+              <span class=left-tool-tiptext>液化工具
+              </span> 
+            </div> 
+            <div class=left-tool-tip> 
+              <button class="fix-pix-button left-list-button" id=fix-pix-button001> 
+                <img src=css/icon-stamp.svg height=20 width=20 alt=仿制图章 class=icon> 
+              </button> 
+              <span class=left-tool-tiptext>仿制图章
+              </span> 
+            </div> 
+            <div class=left-tool-tip> 
+              <button class="fix-pix-button left-list-button" id=patch-pix-button001> 
+                <img src=css/icon-xiubu.svg height=20 width=20 alt=修补工具 class=icon> 
+              </button> 
+              <span class=left-tool-tiptext>修补工具
+              </span> 
+            </div> 
+            <div class=left-tool-tip> 
+              <button class="new-button2 left-list-button" id=zoomOutButton> 
+                <img src=css/icon-zoom-out.svg height=21 width=21 alt=缩小图像 class=icon> 
+              </button> 
+              <span class=left-tool-tiptext>缩小图像
+              </span> 
+            </div> 
+            <div class=left-tool-tip> 
+              <button class="new-button1 left-list-button" id=zoomInButton> 
+                <img src=css/icon-zoom-in.svg height=21 width=21 alt=放大图像 class=icon> 
+              </button> 
+              <span class=left-tool-tiptext>放大图像
+              </span> 
+            </div> 
+            <div class=left-tool-tip> 
+              <button class="reset-button left-list-button"> 
+                <img src=css/icon-zoom-auto.svg height=21 width=21 alt=重置缩放 class=icon> 
+              </button> 
+              <span class=left-tool-tiptext>重置缩放
+              </span> 
+            </div> 
+            <div class=left-tool-tip> 
+              <button class="toggle-button left-list-button"> 
+                <img src=css/icon-hide.svg height=20 width=20 alt=隐藏列图 class=icon> 
+              </button> 
+              <span class=left-tool-tiptext>隐藏列图
+              </span> 
+            </div> 
+            <div class="left-tool-tip right-aligned"> 
+              <button class=right-list-button1 id=preset_ibrary style=height:40px> 
+                <img src=css/icon-presetBox.svg height=20 width=20 alt=预设面板 class=icon> 
+              </button> 
+              <span class=left-tool-tiptext>预设面板
+              </span> 
+            </div> 
+          </div> 
+          <div class="vertical-container blue"> 
+            <p class=zhuyewenhouyu-center-text>拖拽导入图片
+            </p> 
+            <canvas class=browser-image>
+            </canvas> 
+            <div class=circle>
+            </div> 
+            <div class=requestInfoclass id=requestInfo>
+            </div> 
+            <div class=preset_ibrary_box id=presetLibraryContainer> 
+              <div class=presetLibrarytitle style=display:flex;justify-content:space-between;align-items:center> 
+                <div class=preset-title1 style=margin:0>人像预设
+                </div> 
+                <div class="preset-title1 preset_trigger" style=margin:0;font-size:14px;cursor:pointer>
+                  <img src=css/icon-preset-trigger.svg height=18 width=18 alt=添加 class=icon>
+                </div> 
+              </div> 
+              <div class=preset-library-group>
+                <button class="preset-library-group-button active">推荐
+                </button>
+                <button class=preset-library-group-button>我的
+                </button>
+              </div> 
+              <div style="margin:15px 10px 10px 20px;font-size:12px">通用
+              </div> 
+              <div class=custom-list-container> 
+                <ul class=custom-list id=preset-list>
+                </ul> 
+              </div> 
+            </div> 
+          </div> 
+          <div class="vertical-container yellow"> 
+            <div style=display:flex;align-items:center;gap:10px;flex-wrap:nowrap;position:relative> 
+              <input id=imageInput type=file style=display:none accept=images/* multiple> 
+              <button class=import-button style=flex-shrink:0>导入图片
+              </button> 
+              <div class=filter-wrapper> 
+                <button class=filter-button id=filterButton> 
+                  <img src=css/icon-select.svg height=16 width=16 alt=筛选 class=icon> 筛选 
+                  <svg class=filter-chevron fill=none height=12 stroke=#b9b9b9 stroke-linecap=round stroke-linejoin=round stroke-width=2 viewBox="0 0 24 24" width=12> 
+                    <polyline points="6 9 12 15 18 9"/> 
+                  </svg> 
+                  <span class=filter-badge style=display:none id=filterBadge>
+                  </span> 
+                </button> 
+                <div class=filter-menu id=filterMenu> 
+                  <div class="filter-menu-item active" data-filter=all>全部图片
+                  </div> 
+                  <div class=filter-menu-item data-filter=unrated>未评分（0★）
+                  </div> 
+                  <div class=filter-menu-item data-filter=1>1 ★ 及以上
+                  </div> 
+                  <div class=filter-menu-item data-filter=2>2 ★ 及以上
+                  </div> 
+                  <div class=filter-menu-item data-filter=3>3 ★ 及以上
+                  </div> 
+                  <div class=filter-menu-item data-filter=4>4 ★ 及以上
+                  </div> 
+                  <div class=filter-menu-item data-filter=5>5 ★
+                  </div> 
+                  <div class=filter-menu-divider>
+                  </div> 
+                  <div class=filter-menu-label>颜色标签
+                  </div> 
+                  <div class="filter-menu-item color-item" data-filter=color:none>未上色
+                  </div> 
+                  <div class="filter-menu-item color-item" data-filter=color:red>
+                    <span class=filter-color-dot style=background:#ff5252>
+                    </span>红（废弃）
+                  </div> 
+                  <div class="filter-menu-item color-item" data-filter=color:yellow>
+                    <span class=filter-color-dot style=background:#fc0>
+                    </span>黄（待定）
+                  </div> 
+                  <div class="filter-menu-item color-item" data-filter=color:green>
+                    <span class=filter-color-dot style=background:#39c96f>
+                    </span>绿（通过）
+                  </div> 
+                  <div class="filter-menu-item color-item" data-filter=color:blue>
+                    <span class=filter-color-dot style=background:#3d9bff>
+                    </span>蓝（备选）
+                  </div> 
+                  <div class="filter-menu-item color-item" data-filter=color:purple>
+                    <span class=filter-color-dot style=background:#b06ae0>
+                    </span>紫（精品）
+                  </div> 
+                </div> 
+              </div> 
+              <div class=imageFileNameclass id=imageFileName style=flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap> 
+              </div> 
+              <div class=rating-group> 
+                <div class=color-tag-selector id=colorTagSelector> 
+                  <span class="color-tag-dot tag-red" data-tag=red data-tip=红：废弃>
+                  </span> 
+                  <span class="color-tag-dot tag-yellow" data-tag=yellow data-tip=黄：待定>
+                  </span> 
+                  <span class="color-tag-dot tag-green" data-tag=green data-tip=绿：通过>
+                  </span> 
+                  <span class="color-tag-dot tag-blue" data-tag=blue data-tip=蓝：备选>
+                  </span> 
+                  <span class="color-tag-dot tag-purple" data-tag=purple data-tip=紫：精品>
+                  </span> 
+                </div> 
+                <div class=fivestar id=starRating> 
+                  <span>★
+                  </span>
+                  <span>★
+                  </span>
+                  <span>★
+                  </span>
+                  <span>★
+                  </span>
+                  <span>★
+                  </span> 
+                </div> 
+              </div> 
+              <div style=flex:1>
+              </div> 
+              <div class=imageCountclass id=imageCount> 
+              </div> 
+              <button class=header-select-btn id=selectAllBtn>全选
+              </button> 
+              <button class=header-select-btn id=deselectAllBtn>取消全选
+              </button> 
+              <button class=compare-button id=compare-button style="background:0 0;border:none;padding:0;position:static;display:inline-flex;align-items:center;flex-shrink:0;margin-bottom:5px"> 
+                <img src=css/icon-compare.svg height=25 width=25 alt=对比 class=icon> 
+              </button> 
+            </div> 
+            <div class=image-thumbnails id=thumbnail-list>
+            </div> 
+          </div> 
+        </div> 
+        <div class="horizontal-container green"> 
+          <div class=sub-container-top id=subContainerTop> 
+            <div style=font-size:14px;padding-left:15px;display:flex;align-items:center;height:100%;gap:5px>
+              <img src=css/icon-face-btn.svg height=18 width=18 id=subTopIcon style=flex-shrink:0>
+              <span id=subTopText>人像处理
+              </span>
+            </div> 
+          </div> 
+          <div class=sub-container-aichat>
+          </div> 
+          <div class=sub-container-middle> 
+            <ul class=main-menu> 
+              <li id=face-selector-bar style=list-style:none>
+              </li> 
+              <li id=slider-root-blemish style=list-style:none>
+              </li> 
+              <li id=slider-root-skin style=list-style:none>
+              </li> 
+              <li id=slider-root-facial style=list-style:none>
+              </li> 
+              <li id=slider-root-body style=list-style:none>
+              </li> 
+              <li id=slider-root-magic style=list-style:none>
+              </li> 
+              <li id=slider-root-eye style=list-style:none>
+              </li> 
+              <li id=slider-root-clothes style=list-style:none>
+              </li> 
+              <li id=slider-root-makeup style=list-style:none>
+              </li> 
+              <li id=slider-root-hair style=list-style:none>
+              </li> 
+            </ul> 
+          </div> 
+          <div class=histogram-container-big id=histogramDiv> 
+            <div class=histogram-container> 
+              <div>
+                <canvas class=histogram-wrapper id=combined-histogram>
+                </canvas>
+              </div> 
+              <div class=channel-controls>
+                <label>
+                  <input id=showLuminance type=checkbox checked>
+                </label>
+                <label>
+                  <input id=showRed type=checkbox checked>
+                </label>
+                <label>
+                  <input id=showGreen type=checkbox checked>
+                </label>
+                <label>
+                  <input id=showBlue type=checkbox checked>
+                </label>
+              </div> 
+            </div> 
+          </div> 
+          <div class=sub-container-color> 
+            <div style=display:block id=color-adjust-box> 
+              <div class=main-menu> 
+                <li id=slider-root-filter style=list-style:none>
+                </li> 
+                <li id=slider-root-color-match style=list-style:none>
+                </li> 
+                <li id=slider-root-basic-color style=list-style:none>
+                </li> 
+                <li id=slider-root-curve style=list-style:none>
+                </li> 
+                <li id=slider-root-hsl style=list-style:none>
+                </li> 
+                <li id=slider-root-color-grade style=list-style:none>
+                </li> 
+                <li id=slider-root-detail style=list-style:none>
+                </li> 
+                <li id=slider-root-effects style=list-style:none>
+                </li> 
+                <li id=slider-root-calibration style=list-style:none>
+                </li> 
+              </div> 
+              <div style=display:none;padding:10px;background:rgba(255,255,255,.05);border-radius:8px;margin-top:8px id=color-match-panel> 
+                <div style=color:#fff;font-size:14px;margin-bottom:8px;font-weight:700>AI仿色
+                </div> 
+                <div style=display:flex;align-items:center;gap:10px;margin-bottom:10px> 
+                  <input id=reference-image-input type=file style=display:none accept=image/*> 
+                  <button id=upload-reference-btn style="padding:6px 12px;background:#4a90d9;color:#fff;border:none;border-radius:4px;cursor:pointer">上传参考图
+                  </button> 
+                  <div style="width:50px;height:50px;border:1px dashed #666;border-radius:4px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#222" id=reference-preview> 
+                    <span style=color:#888;font-size:10px>无图
+                    </span> 
+                  </div> 
+                  <button id=clear-reference-btn style="padding:4px 8px;background:#d9534f;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:12px">清除
+                  </button> 
+                </div> 
+                <div id=color-match-sliders> 
+                  <div style=display:flex;align-items:center;gap:8px;margin-bottom:6px> 
+                    <span style=color:#aaa;font-size:12px;width:70px>整体效果
+                    </span> 
+                    <input id=color-match-strength type=range max=100 min=0 value=80 style=flex:1> 
+                    <span style=color:#fff;font-size:12px;width:25px;text-align:right id=color-match-strength-val>80
+                    </span> 
+                  </div> 
+                  <div style=display:flex;align-items:center;gap:8px;margin-bottom:6px> 
+                    <span style=color:#aaa;font-size:12px;width:70px>影调
+                    </span> 
+                    <input id=color-match-tone type=range max=100 min=0 value=100 style=flex:1> 
+                    <span style=color:#fff;font-size:12px;width:25px;text-align:right id=color-match-tone-val>100
+                    </span> 
+                  </div> 
+                  <div style=display:flex;align-items:center;gap:8px;margin-bottom:6px> 
+                    <span style=color:#aaa;font-size:12px;width:70px>色彩
+                    </span> 
+                    <input id=color-match-color type=range max=100 min=0 value=100 style=flex:1> 
+                    <span style=color:#fff;font-size:12px;width:25px;text-align:right id=color-match-color-val>100
+                    </span> 
+                  </div> 
+                  <div style=display:flex;align-items:center;gap:8px> 
+                    <span style=color:#aaa;font-size:12px;width:70px>分区保护
+                    </span> 
+                    <input id=color-match-use-regions type=checkbox checked> 
+                  </div> 
+                </div> 
+              </div> 
+            </div> 
+          </div> 
+          <div class=cube-box-top id=cubeBoxTop> 
+            <a id=closeCubeBox class=menu-link>
+              <span class=back_triangle>
+              </span>滤镜
+            </a> 
+          </div> 
+          <div class=cube-box-container id=cubeDiv> 
+            <div class=cube-box-area>
+            </div> 
+          </div> 
+          <div class=sub-container-cloth> 
+            <ul class=main-menu> 
+              <li id=slider-root-cloth-adjust style=list-style:none>
+              </li> 
+            </ul> 
+          </div> 
+          <div class=sub-container-image> 
+            <ul class=main-menu> 
+              <li id=slider-root-idphoto style=list-style:none>
+              </li> 
+            </ul> 
+          </div> 
+          <div class=sub-container-relight> 
+            <ul class=main-menu> 
+              <li id=slider-root-relight style=list-style:none>
+              </li> 
+            </ul> 
+          </div> 
+          <div class=sub-container-crop> 
+            <ul class=main-menu> 
+              <li id=slider-root-crop style=list-style:none>
+              </li> 
+            </ul> 
+          </div> 
+          <div class="sub-container bottom"> 
+            <button class=header-buttons2 id=sync-button>同步
+            </button> 
+            <button class="switch-button header-buttons2">复位
+            </button> 
+          </div> 
+        </div> 
+        <div class="horizontal-container purple2" style=height:100%> 
+          <div class="left-tool-tip left-tooltip"> 
+            <button class=toggle-tab-btn id=color-adjust-group-box> 
+              <img src=css/icon-color-btn.svg height=20 width=20 alt=色彩调整> 
+            </button> 
+            <span class=new-dot style=top:5px;right:5px>
+            </span>
+            <span class=left-tool-tiptext>色彩调整
+            </span> 
+          </div> 
+          <div class="left-tool-tip left-tooltip"> 
+            <button class=toggle-tab-btn id=cube-more-quick-btn> 
+              <img src=css/icon-cube.svg height=20 width=20 alt=滤镜列表> 
+            </button> 
+            <span class=left-tool-tiptext>滤镜列表
+            </span> 
+          </div> 
+          <div class="left-tool-tip left-tooltip"> 
+            <button class="toggle-tab-btn active" id=beauty-filter-group-box> 
+              <img src=css/icon-face-btn.svg height=20 width=20 alt=人像处理> 
+            </button> 
+            <span class=new-dot style=top:5px;right:5px>
+            </span>
+            <span class=left-tool-tiptext>人像处理
+            </span> 
+          </div> 
+          <div class="left-tool-tip left-tooltip"> 
+            <button class=toggle-tab-btn id=relight-group-box> 
+              <img src=css/icon-light.svg height=20 width=20 alt=二次打光> 
+            </button>
+            <span class=left-tool-tiptext>二次打光
+            </span> 
+          </div> 
+          <div class="left-tool-tip left-tooltip"> 
+            <button class=toggle-tab-btn id=image-beautify-group-box> 
+              <img src=css/icon-img-mh.svg height=20 width=20 alt=背景编辑> 
+            </button>
+            <span class=left-tool-tiptext>背景编辑
+            </span> 
+          </div> 
+          <div class="left-tool-tip left-tooltip"> 
+            <button class=toggle-tab-btn id=cloth-beautify-group-box> 
+              <img src=css/icon-cloth-mh.svg height=20 width=20 alt=衣服美化> 
+            </button>
+            <span class=left-tool-tiptext>衣服美化
+            </span> 
+          </div> 
+          <div class="left-tool-tip left-tooltip"> 
+            <button class=toggle-tab-btn id=crop-tool-group-box> 
+              <img src=css/icon-cut-img.svg height=20 width=20 alt=裁切工具> 
+            </button>
+            <span class=left-tool-tiptext>裁切工具
+            </span> 
+          </div> 
+          <div class=purple2-bottom> 
+            <div class="left-tool-tip left-tooltip" style=display:none> 
+              <button class=right-list-button id=mask-on-off> 
+                <img src=css/icon-maskOnOff.svg height=20 width=20 alt=mask class=icon> 
+              </button>
+              <span class=left-tool-tiptext>mask
+              </span> 
+            </div> 
+            <div class="left-tool-tip left-tooltip" style=display:none> 
+              <button class=right-list-button id=68d-on-off>
+                <img src=css/icon-68dOnOff.svg height=20 width=20 alt=68d class=icon> 
+              </button>
+              <span class=left-tool-tiptext>68d
+              </span> 
+            </div> 
+            <div class="left-tool-tip left-tooltip" style=display:none> 
+              <button class=right-list-button id=468d-on-off> 
+                <img src=css/icon-468dOnOff.svg height=20 width=20 alt=468d class=icon> 
+              </button>
+              <span class=left-tool-tiptext>468d
+              </span> 
+            </div> 
+            <div class="left-tool-tip left-tooltip" style=display:none> 
+              <button class=right-list-button id=pose-on-off> 
+                <img src=css/icon-poseOnOff.svg height=20 width=20 alt=姿态特征点 class=icon> 
+              </button>
+              <span class=left-tool-tiptext>姿态特征点
+              </span> 
+            </div> 
+            <div class="left-tool-tip left-tooltip"> 
+              <button class=right-list-button id=painting-brush onclick='window.location.href="#"'> 
+                <img src=css/icon-ai-magic.svg height=20 width=20 alt=AI魔法 class=icon> 
+              </button>
+              <span class=left-tool-tiptext>AI魔法
+              </span> 
+            </div> 
+            <div class="left-tool-tip left-tooltip"> 
+              <button class="preset_save right-list-button" id=painting-brush onclick='window.location.href="#"'> 
+                <img src=css/icon-savePreset.svg height=20 width=20 alt=保存预设 class=icon> 
+              </button>
+              <span class=left-tool-tiptext>保存预设
+              </span> 
+            </div> 
+          </div> 
+        </div> 
+      </div> 
+      <div class=icepsview id=systemView> 
+        <iframe src=about:blank class=system-view-wrapper id=systemFrame sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-downloads allow-top-navigation">
+        </iframe> 
+      </div> 
+      <div class=icepsview id=cameraView> 
+        <iframe src=camera-control.html style=width:100%;height:100vh;border:none>
+        </iframe> 
+      </div> 
+      <div class=icepsview id=chuangyView> 
+        <iframe src=chuangy.html style="width:100%;height:calc(100vh - 50px);border:none">
+        </iframe> 
+      </div> 
+      <script src=js/icepsview.js>
+      </script> 
+      <div class=free_lique_container style=display:none> 
+        <div class=image-free_lique_container>
+          <canvas id=imageCanvas>
+          </canvas> 
+          <div class=zoom-controls-free_lique_container>
+            <span class=zoomsize-value2 id=free_lique_zoomValue>100%
+            </span> 
+            <div class=zoom-dropdown-free_lique_container>
+              <button class=zoom-dropdown-btn id=free_lique_zoomDropdownBtn>▼
+              </button> 
+              <div class=zoom-dropdown-menu id=free_lique_zoomDropdownMenu> 
+                <div class=free_lique_zoom-option data-action=reset>合适
+                </div> 
+                <div class=free_lique_zoom-option data-scale=0.5>50%
+                </div> 
+                <div class=free_lique_zoom-option data-scale=1>100%
+                </div> 
+                <div class=free_lique_zoom-option data-scale=2>200%
+                </div> 
+                <div class=free_lique_zoom-option data-scale=3>300%
+                </div> 
+                <div class=free_lique_zoom-option data-scale=4>400%
+                </div> 
+                <div class=free_lique_zoom-option data-scale=5>500%
+                </div> 
+              </div> 
+            </div> 
+          </div>
+          <button class=free_lique_compare-button id=free_lique_compare_button style="background:0 0;border:none;padding:0"> 
+            <img src=css/icon-compare.svg height=25 width=25 alt=对比 class=icon> 
+          </button> 
+          <div id=previewCircle>
+          </div> 
+          <input id=imageUpload type=file accept=images/*> 
+        </div> 
+        <div class=controls> 
+          <div class=controls-free_lique_container> 
+            <div class=slider-free_lique_container> 
+              <div class=label-value-container>
+                <a style=color:#999;font-size:13px>强度
+                </a> 
+                <span class=free_lique_slider-value2 id=strengthValue>50%
+                </span>
+              </div> 
+              <a>
+                <input id=strengthSlider type=range max=100 min=0 value=50 class=slider-track>
+              </a> 
+            </div> 
+            <div class=slider-free_lique_container> 
+              <div class=label-value-container>
+                <a style=color:#999;font-size:13px>半径
+                </a> 
+                <span class=free_lique_slider-value2 id=radiusValue>100
+                </span>
+              </div> 
+              <a>
+                <input id=radiusSlider type=range max=800 min=1 value=100 class=slider-track>
+              </a> 
+            </div> 
+            <div style="display:flex;justify-self:space-between;gap:20px;margin:50px 0 20px 0"> 
+              <button class=free_lique_button_tool id=dragToggleBtn title="拖拽 (长按鼠标中键或Ctrl+左键)"> 
+                <img src=css/icon-drag.svg height=20 width=20 alt=drag> 
+              </button> 
+              <button class="free_lique_button_tool active" id=liqueToolBtn title=液化> 
+                <img src=css/icon-liquefaction.svg height=20 width=20 alt=液化> 
+              </button> 
+              <button class=free_lique_button_tool id=cancel_msh_button title=移除液化（恢复到最原始状态）> 
+                <img src=css/icon-trash.svg height=20 width=20 alt=垃圾桶 class=icon> 
+              </button> 
+              <button class=free_lique_button_tool id=free_lique_undoBtn title="撤回 (Ctrl+Z)"> 
+                <img src=css/icon-undo.svg height=20 width=20 alt=上一步 class=icon> 
+              </button> 
+            </div> 
+            <div class=zoom-controls> 
+              <div style=display:flex;justify-self:space-between;gap:20px;margin-top:5px> 
+                <button class=free_lique_button_tool id=resetBtn title=重置液化> 
+                  <img src=css/icon-redo.svg height=20 width=20 alt=撤回 class=icon> 
+                </button> 
+                <button class=free_lique_button_tool id=free_lique_zoomOutBtn title="缩小（Ctrl -）"> 
+                  <img src=css/icon-zoom-out.svg height=20 width=20 alt=缩小 class=icon> 
+                </button> 
+                <button class=free_lique_button_tool id=free_lique_zoomInBtn title="放大（Ctrl +）"> 
+                  <img src=css/icon-zoom-in.svg height=20 width=20 alt=放大 class=icon> 
+                </button> 
+                <button class=free_lique_button_tool id=free_lique_zoomResetBtn title="自适应大小（Ctrl + 0）"> 
+                  <img src=css/icon-zoom-auto.svg height=20 width=20 alt=自适应 class=icon> 
+                </button> 
+              </div> 
+            </div> 
+            <div class=free_lique_esc_save_button> 
+              <button class=free_lique_esc_button id=cancelFreeLique>取消
+              </button> 
+              <button class=free_lique_save_button id=save_and_apply_msh_button>保存
+              </button> 
+            </div> 
+          </div> 
+        </div> 
+      </div> 
+      <script src=js/vendor/lasrts.js>
+      </script> 
+    </div> 
+  </body> 
+</html>
